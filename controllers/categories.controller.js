@@ -20,24 +20,13 @@ const categoriesController = (fastify,options,done) =>{
           }
         )
       })
-      fastify.delete('/todos/:id', function (req, reply) {
-        console.log(req.params.id)
-        fastify.pg.query(
-            `DELETE FROM todo WHERE id = ${req.params.id};`,
-          function onResult (err, result) {
-            console.log(req.params,req,'req')
-            reply.send(err || result.rows)
-          }
-        )
-      })
-      fastify.post('/todos', function(req,rep){
+      fastify.post('/', function(req,rep){
         const bodyData = req.body.data
-        const formattedDate = formateDate(bodyData.date);
         fastify.pg.query(
             // `INSERT INTO todo (date, name, description, category)
             // VALUES ('2024-02-22', 'Название', 'Описание', 'Категория');`,
-            `INSERT INTO todo (date, name, description, category)
-            VALUES (TO_DATE('${formattedDate}', 'YYYY-MM-DD'), '${bodyData.name}', '${bodyData.description}', '${bodyData.category}')`,
+            `INSERT INTO categories (name, styles, icon_name)
+            VALUES ('${bodyData.name}', '${bodyData.styles}', '${bodyData.icon_name}')`,
             function onResult (err, result) {
                 rep.send(err || result.rows)
             }
